@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Location Saved | SmartPark LPU</title>
+  <meta name="description" content="Your parking details have been saved successfully in SmartPark LPU.">
+  <link rel="stylesheet" href="css/styles.css?v=7.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🅿️</text></svg>">
+</head>
+<body data-page="saved">
+
+  <!-- Header & Navigation -->
+  <header class="site-header">
+    <div class="nav-container">
+      <div class="brand-wrapper">
+        <a href="index.html" style="display: flex; align-items: center; gap: 0.65rem;">
+          <div class="brand-logo-icon">P</div>
+          <div class="brand-text">
+            <h1>SmartPark LPU</h1>
+            <div class="brand-sub">Campus Parking Assistant</div>
+          </div>
+        </a>
+      </div>
+      <nav class="nav-links">
+        <!-- Theme Toggle Button -->
+        <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Dark and Light Mode" title="Toggle Dark/Light Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="index.html" class="nav-btn nav-btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          </svg>
+          Home
+        </a>
+        <a href="find.html" class="nav-btn nav-btn-primary" id="nav-find-btn">
+          <span class="badge-active-dot" id="nav-active-dot"></span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="10" r="3"></circle>
+            <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path>
+          </svg>
+          Find My Vehicle
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <div class="ticket-wrapper">
+
+        <!-- Empty State -->
+        <div id="saved-empty-state" class="empty-state-card" style="display: none;">
+          <div class="empty-state-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <h3>No Active Parking Spot</h3>
+          <p>You haven't recorded a parking location yet.</p>
+          <a href="index.html" class="btn btn-primary">Go to Home</a>
+        </div>
+
+        <!-- Saved Confirmation View -->
+        <div id="saved-details-view">
+          
+          <!-- Success Card -->
+          <div class="success-badge-card">
+            <div class="success-checkmark-circle">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <h2>Location Saved Successfully!</h2>
+            <p>Your parking spot is saved on this device. Return anytime to locate your vehicle.</p>
+          </div>
+
+          <!-- Digital Smart Parking Pass / Ticket -->
+          <div class="ticket-card">
+            <div class="ticket-header">
+              <div class="ticket-header-title">PARKING PASS • LPU CAMPUS</div>
+              <div class="ticket-timestamp" id="ticket-time">Saved just now</div>
+            </div>
+
+            <div class="ticket-body">
+              <div class="ticket-data-item">
+                <span class="ticket-label">Destination</span>
+                <span class="ticket-value" id="ticket-destination">Academic Block</span>
+              </div>
+
+              <div class="ticket-data-item">
+                <span class="ticket-label">Parking Zone</span>
+                <span class="ticket-value" id="ticket-zone">Zone B</span>
+              </div>
+
+              <div class="ticket-data-item">
+                <span class="ticket-label">Row / Spot</span>
+                <span class="ticket-value highlight-row" id="ticket-row">B-04</span>
+              </div>
+
+              <div class="ticket-data-item">
+                <span class="ticket-label">Walking Time</span>
+                <span class="ticket-value" id="ticket-walking" style="font-size: 1rem;">4 mins walking</span>
+              </div>
+            </div>
+
+            <div class="ticket-footer">
+              <strong>Route:</strong>
+              <span id="ticket-hint">Follow the designated walkway from your destination to your zone.</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="ticket-actions">
+            <a href="find.html" class="btn btn-primary btn-lg btn-block">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="10" r="3"></circle>
+                <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path>
+              </svg>
+              Find My Vehicle Now
+            </a>
+
+            <div class="btn-group" style="justify-content: center; width: 100%;">
+              <button type="button" id="btn-copy-ticket" class="btn btn-outline" style="flex: 1;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy Pass
+              </button>
+              <a href="index.html?edit=true" class="btn btn-outline" style="flex: 1;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Change Spot
+              </a>
+              <a href="index.html" class="btn btn-outline" style="flex: 1;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                </svg>
+                Home
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div>SmartPark LPU • Campus Smart Parking</div>
+      <div>Lovely Professional University</div>
+    </div>
+  </footer>
+
+  <script src="js/storage.js?v=7.0"></script>
+  <script src="js/app.js?v=7.0"></script>
+</body>
+</html>

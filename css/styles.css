@@ -1,0 +1,2826 @@
+/* ==========================================================================
+   SmartPark LPU - Modern, Simple, Clean Campus Parking Assistant
+   Clean Design System with Light Mode & Dark Mode
+   Includes: Cinematic Car Drive-In Intro & Interactive Hero Vehicle Stage
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Light Mode (Clean, Airy, Modern)
+   -------------------------------------------------------------------------- */
+:root {
+  --theme-name: "light";
+
+  --primary: #064e3b;
+  --primary-hover: #047857;
+  --accent: #10b981;
+  --accent-light: #34d399;
+  --accent-soft: #ecfdf5;
+
+  --bg-body: #f8fafc;
+  --surface-card: #ffffff;
+  --surface-subtle: #f1f5f9;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --text-white: #ffffff;
+
+  --border: #e2e8f0;
+  --border-focus: #10b981;
+
+  --status-available: #059669;
+  --status-available-bg: #ecfdf5;
+  --status-nearly: #d97706;
+  --status-nearly-bg: #fffbeb;
+  --status-full: #dc2626;
+  --status-full-bg: #fef2f2;
+
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px -1px rgba(0, 0, 0, 0.07);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-full: 9999px;
+
+  --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Dark Mode (Ultra-Clean Slate & Obsidian)
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] {
+  --theme-name: "dark";
+
+  --primary: #10b981;
+  --primary-hover: #34d399;
+  --accent: #10b981;
+  --accent-light: #6ee7b7;
+  --accent-soft: rgba(16, 185, 129, 0.14);
+
+  --bg-body: #0b0f14;
+  --surface-card: #131a22;
+  --surface-subtle: #1c2530;
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-light: #64748b;
+  --text-white: #ffffff;
+
+  --border: #232f3e;
+  --border-focus: #34d399;
+
+  --status-available: #34d399;
+  --status-available-bg: rgba(16, 185, 129, 0.15);
+  --status-nearly: #fbbf24;
+  --status-nearly-bg: rgba(245, 158, 11, 0.15);
+  --status-full: #f87171;
+  --status-full-bg: rgba(239, 68, 68, 0.15);
+
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* Base & Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+  color: var(--text-primary);
+  background-color: var(--bg-body);
+  line-height: 1.5;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-body);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+p {
+  color: var(--text-secondary);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  width: 100%;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
+.site-header {
+  background-color: var(--surface-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-xs);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.brand-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+
+.brand-text h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.brand-sub {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.nav-btn-outline {
+  background-color: var(--surface-subtle);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.nav-btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.nav-btn-primary {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+.nav-btn-primary:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.badge-active-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: inline-block;
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+/* ==========================================================================
+   CINEMATIC LPU AERIAL DRONE FLIGHT & SMART PARKING THEATER
+   ========================================================================== */
+.drone-theater-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #020617;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transition: opacity 650ms cubic-bezier(0.4, 0, 0.2, 1), transform 650ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drone-theater-overlay.dismissed {
+  opacity: 0;
+  transform: scale(1.06);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Top Drone Flight Telemetry HUD
+   -------------------------------------------------------------------------- */
+.drone-hud-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 54px;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background: linear-gradient(180deg, rgba(2, 6, 23, 0.88) 0%, rgba(2, 6, 23, 0.4) 80%, transparent 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+}
+
+.hud-left, .hud-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.hud-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+}
+
+.hud-rec {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.hud-rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  animation: hudRecBlink 1s ease-in-out infinite alternate;
+}
+
+@keyframes hudRecBlink {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.hud-telemetry-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 600;
+}
+
+.hud-label {
+  color: #10b981;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.hud-center {
+  display: flex;
+  justify-content: center;
+}
+
+.hud-heading-tape {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 1rem;
+  border-radius: 4px;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.hud-heading-curr {
+  color: #38bdf8;
+  font-weight: 800;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+}
+
+.drone-skip-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-left: 0.5rem;
+}
+
+.drone-skip-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* --------------------------------------------------------------------------
+   Tactical Drone HUD Reticle Overlay (Crosshair, Pitch Ladder, Target Box)
+   -------------------------------------------------------------------------- */
+.drone-reticle-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drone-crosshair {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 50%;
+  position: relative;
+}
+
+.drone-crosshair::before, .drone-crosshair::after {
+  content: '';
+  position: absolute;
+  background: rgba(16, 185, 129, 0.8);
+}
+
+.drone-crosshair::before {
+  top: 50%;
+  left: -12px;
+  right: -12px;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.drone-crosshair::after {
+  left: 50%;
+  top: -12px;
+  bottom: -12px;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+.drone-pitch-ladder {
+  position: absolute;
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  opacity: 0.35;
+}
+
+.pitch-line {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed #38bdf8;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: #38bdf8;
+  font-family: monospace;
+}
+
+.pitch-horizon {
+  border-top: 2px solid #38bdf8;
+  width: 140%;
+}
+
+/* Dynamic Target Box */
+.drone-target-box {
+  position: absolute;
+  width: 160px;
+  height: 110px;
+  border: 1px dashed rgba(56, 189, 248, 0.5);
+  transform: translateY(-20px);
+  transition: all 400ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.target-corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: #38bdf8;
+  border-style: solid;
+}
+
+.target-corner.tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+.target-corner.tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+.target-corner.bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+.target-corner.br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+.target-label {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #38bdf8;
+  background: rgba(15, 23, 42, 0.85);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Stage Viewport & Drone Flight Scenes
+   -------------------------------------------------------------------------- */
+.drone-stage-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.drone-scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 700ms ease, transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.06);
+}
+
+.drone-scene.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.scene-backdrop {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.vector-campus-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #020617;
+}
+
+.campus-arch-svg {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.scene-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(2, 6, 23, 0.15) 30%, rgba(2, 6, 23, 0.75) 85%, rgba(2, 6, 23, 0.95) 100%);
+  pointer-events: none;
+}
+
+/* Scene Typography & Overlays */
+.scene-content {
+  position: relative;
+  z-index: 50;
+  text-align: center;
+  color: #ffffff;
+  padding: 2rem;
+  max-width: 680px;
+  margin-top: -3rem;
+}
+
+.scene-tag {
+  display: inline-block;
+  background: rgba(16, 185, 129, 0.22);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #6ee7b7;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  margin-bottom: 0.9rem;
+  text-transform: uppercase;
+}
+
+.scene-hero-title {
+  font-size: 3.2rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(180deg, #ffffff 30%, #a7f3d0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.8));
+}
+
+.scene-title-med {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.9);
+}
+
+.scene-sub {
+  font-size: 1.05rem;
+  color: #e2e8f0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+  margin-bottom: 1.25rem;
+}
+
+.flight-action-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1.1rem;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  color: #38bdf8;
+  font-weight: 600;
+  animation: climbBounce 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes climbBounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-5px); }
+}
+
+/* --------------------------------------------------------------------------
+   STAGE 1: Rooftop Ascent (Academic Block)
+   -------------------------------------------------------------------------- */
+.scene-1.active .scene-backdrop {
+  animation: droneClimb 4.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes droneClimb {
+  0% { transform: translateY(8%) scale(1.08); }
+  50% { transform: translateY(0%) scale(1.04); }
+  100% { transform: translateY(-7%) scale(1.0); }
+}
+
+/* --------------------------------------------------------------------------
+   STAGE 2: Avenue Slide & Car Pass-Through
+   -------------------------------------------------------------------------- */
+.scene-2.active .scene-backdrop {
+  animation: droneSlideAvenue 4.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes droneSlideAvenue {
+  0% { transform: scale(1.0) translateY(-2%); filter: blur(0); }
+  50% { transform: scale(1.35) translateY(2%); filter: blur(0); }
+  80% { transform: scale(2.3) translateY(8%); filter: blur(1.5px); }
+  95% { transform: scale(3.6) translateY(14%); filter: blur(4px); }
+  100% { transform: scale(4.2) translateY(16%); filter: blur(8px); }
+}
+
+/* Optical lens flash when passing through car */
+.drone-optical-whoosh {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.85) 0%, rgba(255, 255, 255, 0.98) 25%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 70;
+}
+
+.scene-2.active .drone-optical-whoosh {
+  animation: opticalWhoosh 4.2s ease forwards;
+}
+
+@keyframes opticalWhoosh {
+  0%, 75% { opacity: 0; }
+  85% { opacity: 0.9; }
+  92% { opacity: 0.98; }
+  100% { opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   STAGE 3: Glide to Parking Lot & Car Parks ("Book your slot early")
+   -------------------------------------------------------------------------- */
+.scene-3.active .scene-backdrop {
+  animation: droneParkingGlide 4.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes droneParkingGlide {
+  0% { transform: scale(1.15) translateY(-5%); }
+  50% { transform: scale(1.05) translateY(-2%); }
+  100% { transform: scale(1.0) translateY(0); }
+}
+
+.drone-parking-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 55;
+}
+
+.bay-slot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.bay-occupied {
+  opacity: 0.85;
+}
+
+.slot-mini-car {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+.slot-mini-label {
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #f87171;
+  background: rgba(15, 23, 42, 0.85);
+  padding: 1px 5px;
+  border-radius: 2px;
+  margin-top: 2px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Target Bay B-04 with Glowing Radar Beacon */
+.bay-target {
+  z-index: 75;
+}
+
+.bay-target-marker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.beacon-pulse {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #10b981;
+  background: rgba(16, 185, 129, 0.25);
+  box-shadow: 0 0 20px #10b981;
+  animation: beaconRipple 1.8s ease-out infinite;
+  position: absolute;
+  top: -12px;
+}
+
+@keyframes beaconRipple {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.bay-id {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #34d399;
+  background: rgba(6, 78, 59, 0.9);
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid #10b981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+  z-index: 5;
+}
+
+/* Car maneuvering and pulling into parking slot */
+.bay-car-actor {
+  width: 70px;
+  margin-top: 6px;
+  transform-origin: center center;
+}
+
+.scene-3.active .bay-car-actor {
+  animation: carDockInSlot 3s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes carDockInSlot {
+  0% {
+    transform: translate(-90px, 45px) rotate(-35deg);
+    opacity: 0;
+  }
+  30% {
+    transform: translate(-45px, 20px) rotate(-20deg);
+    opacity: 1;
+  }
+  65% {
+    transform: translate(-10px, 5px) rotate(-5deg);
+  }
+  85% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+.mini-car-svg {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.9));
+}
+
+/* Top Header: "Book Your Slot Early" (Unobstructed Full View) */
+.scene-content-3 {
+  position: relative;
+  z-index: 50;
+  text-align: center;
+  color: #ffffff;
+  padding: 1.5rem 2rem;
+  max-width: 720px;
+  margin-top: -3.5rem;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  animation: droneHeaderFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes droneHeaderFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hud-bottom-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-hud-reserve {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.45rem 1.15rem;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.45);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-hud-reserve:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+}
+
+.btn-hud-explore {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-hud-explore:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* --------------------------------------------------------------------------
+   Bottom Drone Flight Scrubber & Controls
+   -------------------------------------------------------------------------- */
+.drone-hud-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background: linear-gradient(0deg, rgba(2, 6, 23, 0.92) 0%, rgba(2, 6, 23, 0.4) 80%, transparent 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hud-playback-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hud-ctrl-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--transition);
+}
+
+.hud-ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* Stage Chips (Launch, Fly-Through, Park & Book) */
+.hud-scene-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.scene-chip {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all var(--transition);
+}
+
+.scene-chip .chip-num {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.scene-chip.active {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: #10b981;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+}
+
+.scene-chip.active .chip-num {
+  background: #10b981;
+  color: #022c22;
+}
+
+.scene-chip:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+/* Progress Scrubber */
+.hud-progress-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.hud-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8, #10b981);
+  box-shadow: 0 0 8px #10b981;
+  transition: width 200ms linear;
+}
+
+/* Mobile Responsiveness for Drone Overlay */
+@media (max-width: 768px) {
+  .hud-hide-mobile, .hud-heading-tape {
+    display: none;
+  }
+  .scene-hero-title {
+    font-size: 2.2rem;
+  }
+  .booking-hero-title {
+    font-size: 1.8rem;
+  }
+  .scene-content-3 {
+    margin-top: 5rem;
+    padding: 1.5rem;
+  }
+  .hud-scene-chips .chip-label {
+    display: none;
+  }
+  .scene-chip {
+    padding: 0.35rem 0.5rem;
+  }
+}
+
+/* ==========================================================================
+   HERO SECTION: Split Layout with Interactive Vehicle Stage (Image 2 Inspired)
+   ========================================================================== */
+.hero-section {
+  padding: 2rem 1.25rem 1.5rem;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  align-items: center;
+  gap: 2.25rem;
+}
+
+.hero-text-col {
+  text-align: left;
+}
+
+.hero-mobility-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background-color: var(--accent-soft);
+  color: var(--accent);
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.85rem;
+  border: 1px solid var(--accent);
+}
+
+.hero-title {
+  font-size: 2.45rem;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.4rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.hero-title .highlight {
+  color: var(--accent);
+}
+
+.hero-tagline {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 0 0 1.25rem;
+  font-weight: 400;
+}
+
+.hero-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.btn-replay-intro {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 0.825rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-replay-intro:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+/* Hero Right Column: Interactive Car Showcase */
+.hero-car-col {
+  position: relative;
+}
+
+.hero-car-card {
+  background: var(--surface-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.35rem;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition);
+}
+
+.hero-car-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-lg);
+}
+
+.car-bay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.car-bay-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--accent-soft);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.hero-car-stage {
+  position: relative;
+  width: 100%;
+  padding: 1rem 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Parking bay ground sensor lines */
+.bay-ground-lines {
+  position: absolute;
+  bottom: 8px;
+  width: 85%;
+  height: 25px;
+  border-bottom: 2px dashed var(--accent);
+  border-left: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+  opacity: 0.7;
+}
+
+.hero-car-svg-container {
+  width: 100%;
+  max-width: 320px;
+  position: relative;
+  z-index: 2;
+  transition: transform 300ms ease;
+}
+
+.hero-car-card:hover .hero-car-svg-container {
+  transform: translateY(-3px) scale(1.02);
+}
+
+/* Interactive Headlight Rays on Hero Car */
+.hero-headlight-beams {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  height: 90px;
+  display: none;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-headlights-active .hero-headlight-beams {
+  display: block;
+}
+
+.hero-beam-l, .hero-beam-r {
+  position: absolute;
+  bottom: 0;
+  width: 90px;
+  height: 110px;
+  background: radial-gradient(ellipse at top, rgba(255, 245, 180, 0.8) 0%, rgba(255, 230, 150, 0.25) 50%, transparent 75%);
+  filter: blur(8px);
+}
+
+.hero-beam-l { left: 18%; transform: rotate(-12deg); }
+.hero-beam-r { right: 18%; transform: rotate(12deg); }
+
+/* Hazard blinkers animation */
+.hazards-active .car-indicator-light {
+  animation: hazardBlink 450ms ease infinite alternate;
+}
+
+@keyframes hazardBlink {
+  from { fill: #f59e0b; opacity: 1; filter: drop-shadow(0 0 8px #f59e0b); }
+  to { fill: #78350f; opacity: 0.3; }
+}
+
+/* Hero Car Interactive Action Buttons */
+.hero-car-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.car-ctrl-btn {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.car-ctrl-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Active Saved Spotlight Card */
+.active-parking-alert {
+  background-color: var(--accent-soft);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-lg);
+  padding: 0.85rem 1.15rem;
+  margin-top: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
+}
+
+.active-alert-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.active-alert-icon {
+  width: 36px;
+  height: 36px;
+  background-color: var(--accent);
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.active-alert-title {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.active-alert-sub {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.active-alert-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+/* Update Mode Banner (shown when ?edit=true) */
+.update-mode-banner {
+  background-color: var(--surface-card);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.update-mode-text {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Main Content Layout
+   ========================================================================== */
+.main-content {
+  flex: 1;
+  padding: 1rem 0 3rem;
+}
+
+.step-guide-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+}
+
+.step-num-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.step-guide-text h3 {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.step-guide-text p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Destination Selection
+   ========================================================================== */
+.destination-card {
+  background-color: var(--surface-card);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.dest-chips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.65rem;
+}
+
+.dest-chip {
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: left;
+  outline: none;
+}
+
+.dest-chip:hover {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+}
+
+.dest-chip.active {
+  background-color: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.dest-chip-icon {
+  font-size: 1.2rem;
+}
+
+.dest-chip-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.dest-chip-sub {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-right: 2.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+}
+
+.custom-select:focus {
+  border-color: var(--accent);
+}
+
+.select-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--accent);
+}
+
+/* ==========================================================================
+   VISUAL PARKING LOT & SMART RECOMMENDATION (Inspired by Reference Images 1, 2 & 3)
+   ========================================================================== */
+
+/* Dashboard Header & Smart Action Bar */
+.visual-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding: 0.5rem 0;
+}
+
+.dash-kicker {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.dash-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0.15rem 0 0.35rem;
+  color: var(--text-primary);
+}
+
+.dash-subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* "Suggest Where to Park" Magic Button (Reference Images 1 & 3) */
+.btn-suggest-magic {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 0.75rem 1.6rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  transition: all var(--transition);
+}
+
+.btn-suggest-magic:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.55);
+}
+
+.magic-sparkle {
+  font-size: 1.15rem;
+  animation: magicPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes magicPulse {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.25) rotate(15deg); }
+}
+
+/* Destination Bar Card */
+.destination-bar-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.dest-bar-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.dest-bar-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.dest-bar-chip {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: 0.45rem 1rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all var(--transition);
+}
+
+.dest-bar-chip:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.dest-bar-chip.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.dest-select-hidden {
+  display: none;
+}
+
+/* Visual Lot Split Layout (1.45fr 1fr) */
+.visual-lot-layout {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+}
+
+/* Lot Card Container */
+.lot-card {
+  background: var(--surface-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+/* Zone Switcher Tabs (Reference Image 2) */
+.zone-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.85rem;
+}
+
+.zone-tab-btn {
+  background: var(--surface-subtle);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.55rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+
+.zone-tab-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.zone-tab-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+.tab-zone-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.tag-full {
+  background: rgba(239, 68, 68, 0.18);
+  color: #ef4444;
+}
+
+.tag-avail {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.tag-nearly {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.zone-tab-btn.active .tab-zone-tag {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Zone Info Banner */
+.zone-info-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.zone-name-heading {
+  display: block;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.zone-landmark-meta {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.zone-stats-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   Parking Lot Floor (Asphalt Bay Canvas - Reference Image 2 & 3)
+   ========================================================================== */
+.parking-lot-floor {
+  background: #090e17;
+  border: 2px solid #1e293b;
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+[data-theme="light"] .parking-lot-floor {
+  background: #1e293b;
+  border-color: #cbd5e1;
+}
+
+.lot-driveway {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 1rem;
+  color: #94a3b8;
+  font-family: monospace;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+  margin-bottom: 0.85rem;
+}
+
+.bottom-driveway {
+  border-bottom: none;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  margin-top: 0.85rem;
+  margin-bottom: 0;
+}
+
+.drive-arrow {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+/* Visual Slots Matrix */
+.visual-slots-matrix {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+/* Individual Slot Bay */
+.slot-bay {
+  min-height: 120px;
+  background: rgba(15, 23, 42, 0.6);
+  border-left: 2.5px solid rgba(255, 255, 255, 0.4);
+  border-right: 2.5px solid rgba(255, 255, 255, 0.4);
+  border-top: 2px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.25rem;
+  position: relative;
+  transition: all var(--transition);
+  user-select: none;
+}
+
+/* Occupied Slot */
+.slot-bay.occupied {
+  background: rgba(30, 41, 59, 0.5);
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.slot-bay.occupied .bay-id-tag {
+  color: #94a3b8;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.topdown-car-svg {
+  width: 48px;
+  height: 78px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7));
+}
+
+.bay-car-plate {
+  font-family: monospace;
+  font-size: 0.58rem;
+  color: #cbd5e1;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1px 4px;
+  border-radius: 2px;
+  margin-top: 2px;
+}
+
+/* Available Slot */
+.slot-bay.available {
+  cursor: pointer;
+  background: rgba(16, 185, 129, 0.06);
+  border-left-color: rgba(16, 185, 129, 0.45);
+  border-right-color: rgba(16, 185, 129, 0.45);
+}
+
+.slot-bay.available:hover {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: #10b981;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.25);
+}
+
+.slot-bay.available .bay-id-tag {
+  font-family: monospace;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.bay-avail-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  color: #34d399;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.bay-p-symbol {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid #10b981;
+  background: rgba(16, 185, 129, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: #10b981;
+}
+
+/* AI Suggested Slot (Reference Image 1 & 3 - Glowing Emerald Box & Beacon) */
+.slot-bay.suggested {
+  border: 2px solid #10b981 !important;
+  background: rgba(16, 185, 129, 0.18) !important;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.7), inset 0 0 15px rgba(16, 185, 129, 0.25) !important;
+  transform: scale(1.02);
+  z-index: 10;
+}
+
+.suggested-beacon-badge {
+  position: absolute;
+  top: -12px;
+  background: #10b981;
+  color: #022c22;
+  font-family: -apple-system, sans-serif;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.6);
+  white-space: nowrap;
+  animation: beaconBob 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes beaconBob {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+/* Selected Slot */
+.slot-bay.selected {
+  border: 2px solid #38bdf8 !important;
+  background: rgba(56, 189, 248, 0.2) !important;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.6) !important;
+}
+
+.slot-bay.selected .bay-p-symbol {
+  border-color: #38bdf8;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.3);
+}
+
+/* Lot Floor Legend */
+.lot-legend-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot-avail { background: #10b981; }
+.dot-suggested { background: #10b981; box-shadow: 0 0 8px #10b981; }
+.dot-occupied { background: #ef4444; }
+.dot-selected { background: #38bdf8; }
+
+/* ==========================================================================
+   Side Overview & Reservation Panel (Reference Image 1 & 2)
+   ========================================================================== */
+.lot-overview-column {
+  position: relative;
+}
+
+.overview-sticky-card {
+  background: var(--surface-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.overview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.overview-header h3 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.status-badge-live {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+/* Smart Suggestion Banner */
+.smart-suggestion-banner {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.sugg-badge {
+  font-family: monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #10b981;
+  margin-bottom: 0.3rem;
+}
+
+.sugg-text {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* Selected Slot Card */
+.selected-slot-card {
+  background: var(--surface-subtle);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.slot-hero-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.slot-hero-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.slot-hero-id {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+}
+
+.slot-zone-tag {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+}
+
+.slot-hero-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.slot-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+}
+
+.detail-label {
+  color: var(--text-muted);
+}
+
+.detail-val {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.status-val-avail {
+  color: #10b981;
+}
+
+/* Vehicle Summary Card */
+.vehicle-preview-card {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.veh-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.veh-type-tag {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.veh-card-body {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.veh-mini-icon {
+  font-size: 1.8rem;
+}
+
+.veh-plate-num {
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.veh-model-sub {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* One-Click Park Here / Save Details Button */
+.panel-action-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  text-align: center;
+}
+
+.btn-park-confirm {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.95rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.45);
+  transition: all var(--transition);
+}
+
+.btn-park-confirm:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.6);
+}
+
+.btn-park-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.panel-action-sub {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Mobile responsive for visual lot */
+@media (max-width: 992px) {
+  .visual-lot-layout {
+    grid-template-columns: 1fr;
+  }
+  .visual-slots-matrix {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .visual-slots-matrix {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .dash-title {
+    font-size: 1.5rem;
+  }
+}
+
+.summary-highlight {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.btn-save-details {
+  background-color: var(--accent);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transition);
+}
+
+.btn-save-details:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-save-details:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Saved Location Confirmation Page (saved.html)
+   ========================================================================== */
+.ticket-wrapper {
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.success-badge-card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+.success-checkmark-circle {
+  width: 52px;
+  height: 52px;
+  background-color: var(--status-available-bg);
+  color: var(--accent);
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.success-badge-card h2 {
+  font-size: 1.45rem;
+  margin-bottom: 0.35rem;
+}
+
+.success-badge-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.ticket-card {
+  background-color: var(--surface-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.ticket-header {
+  background-color: var(--surface-subtle);
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ticket-header-title {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.ticket-timestamp {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.ticket-body {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.25rem;
+}
+
+.ticket-data-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.ticket-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ticket-value.highlight-row {
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+
+.ticket-footer {
+  background-color: var(--surface-subtle);
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.ticket-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   Find My Vehicle Page (find.html)
+   ========================================================================== */
+.finder-container {
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+.finder-hero-card {
+  background-color: var(--surface-card);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 1.5rem;
+}
+
+.finder-hero-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.finder-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.finder-pin-icon {
+  width: 48px;
+  height: 48px;
+  background-color: var(--accent);
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.finder-hero-title h2 {
+  font-size: 1.55rem;
+}
+
+.finder-hero-title p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.finder-spot-showcase {
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.15rem;
+}
+
+.spot-detail-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.spot-detail-label {
+  font-size: 0.725rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.spot-detail-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.spot-detail-value.spot-row {
+  color: var(--accent);
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.finder-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  font-size: 0.825rem;
+}
+
+.finder-time-pill,
+.finder-duration-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+}
+
+/* Wayfinder Route Card & Milestones */
+.wayfinder-card {
+  background-color: var(--surface-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.wayfinder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.wayfinder-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wayfinder-map-canvas {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  min-height: 180px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.map-node-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+
+.map-node {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.map-node.target-node {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+}
+
+.map-node-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.map-node-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.map-walking-path {
+  position: relative;
+  margin: 1.25rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.path-line {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent),
+    var(--accent) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  transform: translateY(-50%);
+}
+
+.sim-walker-pin {
+  position: absolute;
+  top: -12px;
+  left: 10%;
+  width: 26px;
+  height: 26px;
+  background: var(--accent);
+  color: #ffffff;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  z-index: 10;
+}
+
+.path-badge {
+  position: relative;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+}
+
+/* Landmark Milestones List */
+.milestones-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.milestones-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.milestones-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.milestone-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-md);
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.milestone-item:hover {
+  border-color: var(--accent);
+}
+
+.milestone-item.checked {
+  opacity: 0.6;
+  text-decoration: line-through;
+  background-color: var(--accent-soft);
+}
+
+.milestone-num {
+  width: 22px;
+  height: 22px;
+  background-color: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.725rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.milestone-item.checked .milestone-num {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+/* Empty State Card */
+.empty-state-card {
+  background-color: var(--surface-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 3rem 1.5rem;
+  text-align: center;
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.empty-state-icon {
+  width: 56px;
+  height: 56px;
+  background-color: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  margin: 0 auto 1.25rem;
+}
+
+.empty-state-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.4rem;
+}
+
+.empty-state-card p {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Buttons */
+.btn-group {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background-color: var(--surface-card);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-danger-outline {
+  background-color: var(--surface-card);
+  color: var(--status-full);
+  border-color: var(--border);
+}
+
+.btn-danger-outline:hover {
+  border-color: var(--status-full);
+  background-color: var(--status-full-bg);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-lg {
+  padding: 0.8rem 1.75rem;
+  font-size: 0.95rem;
+}
+
+/* Toast */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  background: var(--text-primary);
+  color: var(--bg-body);
+  padding: 0.8rem 1.15rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  animation: toastSlideUp 200ms ease-out;
+  min-width: 240px;
+  max-width: 360px;
+}
+
+@keyframes toastSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.toast-icon {
+  color: var(--accent);
+  display: flex;
+}
+
+/* Footer */
+.site-footer {
+  background-color: var(--surface-card);
+  border-top: 1px solid var(--border);
+  padding: 1.75rem 1.25rem;
+  margin-top: auto;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-content {
+  max-width: 1060px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+@media (max-width: 860px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .hero-text-col {
+    text-align: center;
+  }
+
+  .hero-cta-row {
+    justify-content: center;
+  }
+
+  .hero-tagline {
+    margin: 0 auto 1.25rem;
+  }
+
+  .hero-car-col {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .zones-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .slots-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .save-action-area {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-save-details {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .active-parking-alert {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .active-alert-actions {
+    width: 100%;
+  }
+
+  .active-alert-actions .btn {
+    flex: 1;
+  }
+}

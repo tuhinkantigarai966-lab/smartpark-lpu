@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartPark LPU | Park Smarter, Find Your Vehicle Faster</title>
+  <meta name="description" content="SmartPark LPU - Smart parking zone and row tracking for Lovely Professional University campus.">
+  <link rel="stylesheet" href="css/styles.css?v=7.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🅿️</text></svg>">
+</head>
+<body data-page="home">
+
+  <!-- Header & Navigation -->
+  <header class="site-header">
+    <div class="nav-container">
+      <div class="brand-wrapper">
+        <div class="brand-logo-icon">P</div>
+        <div class="brand-text">
+          <h1>SmartPark LPU</h1>
+          <div class="brand-sub">Campus Parking Assistant</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <!-- Theme Toggle Button -->
+        <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Dark and Light Mode" title="Toggle Dark/Light Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="find.html" class="nav-btn nav-btn-primary" id="nav-find-btn">
+          <span class="badge-active-dot" id="nav-active-dot" style="display: none;"></span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="10" r="3"></circle>
+            <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path>
+          </svg>
+          Find My Vehicle
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section: Split Layout (Inspired by Reference Image 2) -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        
+        <!-- Left Column: Typography & Replay CTA -->
+        <div class="hero-text-col">
+          <div class="hero-mobility-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Campus Smart Parking
+          </div>
+          <h2 class="hero-title">Park Smarter. <br><span class="highlight">Find Faster.</span></h2>
+          <p class="hero-tagline">
+            Never lose your vehicle on campus. Select your destination, pick an available slot, and get instant walking directions anytime.
+          </p>
+
+          <div class="hero-cta-row">
+            <a href="#parking-lot-floor" class="btn btn-primary" id="btn-hero-explore">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="9" y1="3" x2="9" y2="21"></line>
+              </svg>
+              View Available Slots ➔
+            </a>
+          </div>
+
+          <!-- Active Parking Spotlight (Shown when vehicle already parked) -->
+          <div id="home-active-banner" class="active-parking-alert" style="display: none;">
+            <div class="active-alert-content">
+              <div class="active-alert-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11 2 11.5 2 12v4c0 .6.4 1 1 1h2"></path>
+                  <circle cx="7" cy="17" r="2"></circle>
+                  <circle cx="17" cy="17" r="2"></circle>
+                </svg>
+              </div>
+              <div>
+                <div class="active-alert-title">Active Parked Vehicle</div>
+                <div class="active-alert-sub" id="banner-spot-text">Checking saved spot...</div>
+              </div>
+            </div>
+            <div class="active-alert-actions">
+              <a href="find.html" class="btn btn-primary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">Find</a>
+              <button type="button" id="banner-change-btn" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.8rem;">Change</button>
+              <button type="button" id="banner-clear-btn" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.8rem;">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Hero Vehicle Card (Reference Image 2) -->
+        <div class="hero-car-col">
+          <div class="hero-car-card" id="hero-car-card">
+            <div class="car-bay-header">
+              <span class="car-bay-badge">
+                <span class="badge-active-dot"></span>
+                <span id="hero-bay-status">Campus Parking Bay</span>
+              </span>
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Interactive Vehicle</span>
+            </div>
+
+            <!-- Vehicle Bay Stage -->
+            <div class="hero-car-stage">
+              <div class="bay-ground-lines"></div>
+
+              <!-- Headlight Beam Overlay -->
+              <div class="hero-headlight-beams">
+                <div class="hero-beam-l"></div>
+                <div class="hero-beam-r"></div>
+              </div>
+
+              <!-- Car Vector Graphic -->
+              <div class="hero-car-svg-container">
+                <svg viewBox="0 0 520 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Ground Shadow -->
+                  <ellipse cx="260" cy="245" rx="220" ry="12" fill="#000000" opacity="0.3" filter="blur(6px)" />
+                  <ellipse cx="260" cy="242" rx="180" ry="7" fill="#000000" opacity="0.5" />
+
+                  <!-- Wheels -->
+                  <rect x="75" y="165" width="46" height="74" rx="12" fill="#18181b" stroke="#09090b" stroke-width="2" />
+                  <ellipse cx="98" cy="202" rx="16" ry="24" fill="#3f3f46" />
+                  <circle cx="98" cy="202" r="8" fill="#a1a1aa" />
+                  <rect x="399" y="165" width="46" height="74" rx="12" fill="#18181b" stroke="#09090b" stroke-width="2" />
+                  <ellipse cx="422" cy="202" rx="16" ry="24" fill="#3f3f46" />
+                  <circle cx="422" cy="202" r="8" fill="#a1a1aa" />
+
+                  <!-- Splitter -->
+                  <path d="M70 215 L450 215 L430 232 L90 232 Z" fill="#09090b" />
+                  <rect x="180" y="210" width="160" height="15" rx="3" fill="#18181b" />
+                  <rect x="95" y="202" width="45" height="12" rx="3" fill="#f59e0b" opacity="0.9" />
+                  <rect x="380" y="202" width="45" height="12" rx="3" fill="#f59e0b" opacity="0.9" />
+
+                  <!-- Main Body (Alpine White / Orange Sport Styling) -->
+                  <path d="M68 185 C68 165 90 152 125 148 L170 142 L200 95 C210 78 230 72 260 72 C290 72 310 78 320 95 L350 142 L395 148 C430 152 452 165 452 185 L445 212 L75 212 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+
+                  <!-- Hood Creases -->
+                  <path d="M170 142 L210 185" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
+                  <path d="M350 142 L310 185" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
+
+                  <!-- Cabin Glass -->
+                  <path d="M204 98 L316 98 L344 140 L176 140 Z" fill="#0f172a" stroke="#1e293b" stroke-width="2" />
+                  <path d="M220 102 L245 102 L205 136 L185 136 Z" fill="#ffffff" opacity="0.25" />
+                  <rect x="250" y="102" width="20" height="7" rx="2" fill="#334155" />
+
+                  <!-- Mirrors -->
+                  <path d="M168 136 L148 132 L150 144 L170 142 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+                  <path d="M352 136 L372 132 L370 144 L350 142 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+
+                  <!-- Kidney Grille -->
+                  <rect x="226" y="162" width="30" height="34" rx="6" fill="#09090b" stroke="#047857" stroke-width="2" />
+                  <rect x="264" y="162" width="30" height="34" rx="6" fill="#09090b" stroke="#047857" stroke-width="2" />
+                  <circle cx="260" cy="154" r="6" fill="#10b981" stroke="#ffffff" stroke-width="1.5" />
+
+                  <!-- Headlights -->
+                  <rect x="110" y="160" width="98" height="36" rx="6" fill="#09090b" stroke="#94a3b8" stroke-width="1.5" />
+                  <circle cx="132" cy="178" r="14" fill="#fef08a" stroke="#ffffff" stroke-width="2" />
+                  <circle cx="132" cy="178" r="7" fill="#ffffff" />
+                  <circle cx="168" cy="178" r="14" fill="#fef08a" stroke="#ffffff" stroke-width="2" />
+                  <circle cx="168" cy="178" r="7" fill="#ffffff" />
+                  <path d="M110 160 L118 160 L118 196 L110 196 Z" fill="#f59e0b" class="car-indicator-light" />
+
+                  <rect x="312" y="160" width="98" height="36" rx="6" fill="#09090b" stroke="#94a3b8" stroke-width="1.5" />
+                  <circle cx="352" cy="178" r="14" fill="#fef08a" stroke="#ffffff" stroke-width="2" />
+                  <circle cx="352" cy="178" r="7" fill="#ffffff" />
+                  <circle cx="388" cy="178" r="14" fill="#fef08a" stroke="#ffffff" stroke-width="2" />
+                  <circle cx="388" cy="178" r="7" fill="#ffffff" />
+                  <path d="M402 160 L410 160 L410 196 L402 196 Z" fill="#f59e0b" class="car-indicator-light" />
+
+                  <!-- Plate -->
+                  <rect x="220" y="200" width="80" height="15" rx="2" fill="#ffffff" stroke="#0f172a" stroke-width="1" />
+                  <text x="260" y="211" font-family="-apple-system, sans-serif" font-size="8.5" font-weight="800" fill="#0f172a" text-anchor="middle">LPU-PARK</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Interactive Widget Controls -->
+            <div class="hero-car-controls">
+              <button type="button" id="btn-toggle-headlights" class="car-ctrl-btn" title="Toggle Headlight Beams">
+                💡 Headlights
+              </button>
+              <button type="button" id="btn-flash-hazards" class="car-ctrl-btn" title="Flash Amber Hazard Indicators">
+                🚨 Flash / Beep
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      
+      <!-- Update Mode Alert Banner (Shown when ?edit=true) -->
+      <div id="update-mode-banner" class="update-mode-banner" style="display: none;">
+        <div class="update-mode-text">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          <span>Updating Parking Location: Select your new zone or row below</span>
+        </div>
+        <button type="button" id="btn-cancel-update" class="btn btn-outline" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;">
+          Cancel
+        </button>
+      </div>
+
+      <!-- ====================================================================
+           SMARTPARK VISUAL PARKING DASHBOARD (Inspired by Reference Images 1, 2 & 3)
+           ==================================================================== -->
+      
+      <!-- Top Smart Action & Destination Bar -->
+      <section class="visual-dashboard-header">
+        <div class="dash-header-left">
+          <div class="dash-title-wrap">
+            <span class="dash-kicker">LPU CAMPUS NAVIGATION</span>
+            <h2 class="dash-title">Smart Parking Lot & Bay Selector</h2>
+            <p class="dash-subtitle">Real-time slot visualizer with AI-assisted closest bay recommendations</p>
+          </div>
+        </div>
+
+        <div class="dash-header-actions">
+          <!-- Suggest Where to Park Primary Button -->
+          <button type="button" id="btn-suggest-best-slot" class="btn-suggest-magic" title="Find and recommend the closest available parking slot">
+            <span class="magic-sparkle">✨</span>
+            <span class="magic-text">Suggest Where to Park</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Destination Selector Row -->
+      <div class="destination-bar-card">
+        <div class="dest-bar-label">
+          <span class="dest-pin-icon">📍</span>
+          <span>Your Destination:</span>
+        </div>
+        <div class="dest-bar-chips" id="dest-quick-chips">
+          <button type="button" class="dest-bar-chip active" data-dest="academic">
+            <span>🏫</span> Academic Block (Blocks 34–38)
+          </button>
+          <button type="button" class="dest-bar-chip" data-dest="library">
+            <span>📚</span> Central Library
+          </button>
+          <button type="button" class="dest-bar-chip" data-dest="unimall">
+            <span>🛍️</span> University Mall (UniMall)
+          </button>
+        </div>
+        <select id="destination-select" class="dest-select-hidden" aria-label="Campus Destination">
+          <option value="academic" selected>Academic Block (Blocks 34–38)</option>
+          <option value="library">Central Library</option>
+          <option value="unimall">University Mall (UniMall)</option>
+        </select>
+      </div>
+
+      <!-- Main Visual Lot & Overview Split Layout (Reference Images 1 & 2) -->
+      <div class="visual-lot-layout">
+        
+        <!-- LEFT: Visual Parking Lot Grid & Zone Tabs (Reference Image 2) -->
+        <div class="lot-grid-column">
+          <div class="lot-card">
+            
+            <!-- Zone Switcher Tabs (Reference Image 2) -->
+            <div class="zone-tabs-bar">
+              <button type="button" class="zone-tab-btn" data-zone="A">
+                <span class="tab-zone-letter">Zone A</span>
+                <span class="tab-zone-tag tag-full">FULL</span>
+              </button>
+              <button type="button" class="zone-tab-btn active" data-zone="B">
+                <span class="tab-zone-letter">Zone B</span>
+                <span class="tab-zone-tag tag-avail">24 FREE</span>
+              </button>
+              <button type="button" class="zone-tab-btn" data-zone="C">
+                <span class="tab-zone-letter">Zone C</span>
+                <span class="tab-zone-tag tag-nearly">3 FREE</span>
+              </button>
+            </div>
+
+            <!-- Zone Info Bar -->
+            <div class="zone-info-banner" id="zone-info-banner">
+              <div class="zone-info-meta">
+                <span class="zone-name-heading" id="current-zone-title">Zone B • Central Courtyard</span>
+                <span class="zone-landmark-meta" id="current-zone-landmark">Beside Block 36 Food Court & Central Lawns</span>
+              </div>
+              <div class="zone-stats-pills">
+                <span class="stat-pill" id="zone-stat-avail">🟢 24 Free</span>
+                <span class="stat-pill" id="zone-stat-walk">🚶 <span id="zone-stat-walk-text">4 mins walk</span></span>
+              </div>
+            </div>
+
+            <!-- Visual Parking Lot Floor (Reference Image 2 & 3) -->
+            <div class="parking-lot-floor" id="parking-lot-floor">
+              <!-- Top Driving Aisle Indicator -->
+              <div class="lot-driveway top-driveway">
+                <span class="drive-arrow">➔ LANE 1 (WEST ENTRY)</span>
+                <span class="drive-speed">MAX 10 KM/H</span>
+              </div>
+
+              <!-- Visual Slots Grid Container -->
+              <div class="visual-slots-matrix" id="visual-slots-matrix">
+                <!-- Dynamically populated slots with rendered cars and open bays -->
+              </div>
+
+              <!-- Bottom Driving Aisle Indicator -->
+              <div class="lot-driveway bottom-driveway">
+                <span class="drive-arrow">➔ LANE 2 (CAMPUS EXIT)</span>
+                <span class="drive-speed">PEDESTRIAN PRIORITY</span>
+              </div>
+            </div>
+
+            <!-- Lot Floor Legend -->
+            <div class="lot-legend-row">
+              <span class="legend-item"><span class="legend-dot dot-avail"></span> Available Bay</span>
+              <span class="legend-item"><span class="legend-dot dot-suggested"></span> ⭐ Suggested Slot</span>
+              <span class="legend-item"><span class="legend-dot dot-occupied"></span> 🚗 Occupied</span>
+              <span class="legend-item"><span class="legend-dot dot-selected"></span> ✨ Selected</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT: Side Overview & Reservation Panel (Reference Image 1 & 2) -->
+        <div class="lot-overview-column">
+          <div class="overview-sticky-card">
+            
+            <div class="overview-header">
+              <h3>Parking Overview</h3>
+              <span class="status-badge-live">● Live Guidance</span>
+            </div>
+
+            <!-- Smart Suggestion Callout Banner -->
+            <div class="smart-suggestion-banner" id="smart-suggestion-banner">
+              <div class="sugg-badge">
+                <span>⭐ AI PARKING RECOMMENDATION</span>
+              </div>
+              <div class="sugg-text" id="sugg-banner-reason">
+                Optimal for Academic Block: Closest bay to Block 36 South Courtyard entrance (~2 min walk).
+              </div>
+            </div>
+
+            <!-- Selected Slot Hero Card -->
+            <div class="selected-slot-card" id="selected-slot-card">
+              <div class="slot-hero-header">
+                <div>
+                  <div class="slot-hero-label">RECOMMENDED BAY</div>
+                  <div class="slot-hero-id" id="panel-slot-id">Bay B-04</div>
+                </div>
+                <div class="slot-zone-tag" id="panel-zone-tag">ZONE B</div>
+              </div>
+
+              <div class="slot-hero-details">
+                <div class="slot-detail-row">
+                  <span class="detail-label">Walking Distance:</span>
+                  <span class="detail-val" id="panel-walk-dist">150m (~2 mins walk)</span>
+                </div>
+                <div class="slot-detail-row">
+                  <span class="detail-label">Destination:</span>
+                  <span class="detail-val" id="panel-destination-name">Academic Block</span>
+                </div>
+                <div class="slot-detail-row">
+                  <span class="detail-label">Bay Amenities:</span>
+                  <span class="detail-val" id="panel-amenities">☂️ Shaded • ⚡ EV Ready • 🛡️ CCTV</span>
+                </div>
+                <div class="slot-detail-row">
+                  <span class="detail-label">Status:</span>
+                  <span class="detail-val status-val-avail" id="panel-status-val">Available Now</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vehicle Summary Card (Reference Image 1) -->
+            <div class="vehicle-preview-card">
+              <div class="veh-card-header">
+                <span>Vehicle Profile</span>
+                <span class="veh-type-tag">Sedan / 4W</span>
+              </div>
+              <div class="veh-card-body">
+                <div class="veh-mini-icon">🚘</div>
+                <div>
+                  <div class="veh-plate-num" id="veh-plate-display">PB-08-LP-2024</div>
+                  <div class="veh-model-sub">LPU Campus Student • Swift Sedan</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- One-Click Park Here / Save Details Button -->
+            <div class="panel-action-wrap">
+              <button type="button" id="btn-save-details" class="btn-park-confirm">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                  <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                </svg>
+                <span>Save Details & Park Here</span>
+              </button>
+              <p class="panel-action-sub">Saves spot location to pass & walking tracker</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div>SmartPark LPU • Campus Smart Parking</div>
+      <div>Lovely Professional University</div>
+    </div>
+  </footer>
+
+  <script src="js/storage.js?v=7.0"></script>
+  <script src="js/app.js?v=7.0"></script>
+</body>
+</html>
