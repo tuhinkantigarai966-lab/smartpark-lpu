@@ -312,6 +312,7 @@ function initHomePage() {
   });
 
   // Render Visual Parking Slots Grid (Reference Images 1, 2 & 3)
+  // Render Visual Parking Slots Grid (Reference Images 1, 2 & 3)
   function renderVisualSlots() {
     if (!slotsMatrix) return;
     slotsMatrix.innerHTML = '';
@@ -321,14 +322,20 @@ function initHomePage() {
 
     zoneInfo.slots.forEach(slot => {
       const isOccupied = slot.status === 'occupied';
-      const isSuggested = slot.id === activeSuggestedSlotId;
+      const isMySpot = !!slot.isBookedByMe;
+      const isBookedByOther = !!slot.isBookedByOther;
+      const isSuggested = slot.id === activeSuggestedSlotId && !isOccupied;
       const isSelected = slot.id === currentSlotId;
 
       const bayDiv = document.createElement('div');
-      bayDiv.className = `slot-bay ${isOccupied ? 'occupied' : 'available'} ${isSuggested ? 'suggested' : ''} ${isSelected ? 'selected' : ''}`;
+      bayDiv.className = `slot-bay ${isOccupied ? 'occupied' : 'available'} ${isMySpot ? 'is-my-spot' : ''} ${isBookedByOther ? 'booked-by-other' : ''} ${isSuggested ? 'suggested' : ''} ${isSelected ? 'selected' : ''}`;
       bayDiv.dataset.slotId = slot.id;
 
-      if (isSuggested) {
+      if (isMySpot) {
+        bayDiv.innerHTML += `
+          <span class="my-spot-badge">★ YOUR SPOT</span>
+        `;
+      } else if (isSuggested) {
         bayDiv.innerHTML += `
           <span class="suggested-beacon-badge">⭐ BEST SPOT</span>
         `;
@@ -340,21 +347,38 @@ function initHomePage() {
       idTag.textContent = slot.id;
       bayDiv.appendChild(idTag);
 
-      if (isOccupied) {
-        // Render Top-Down Car Vector
-        const carHtml = createTopDownCarSvg(slot.carColor || '#94a3b8');
+      if (isMySpot) {
+        // Render user's own parked car in the bay
+        const carHtml = createTopDownCarSvg('#38bdf8');
+        const carWrap = document.createElement('div');
+        carWrap.innerHTML = carHtml;
+        bayDiv.appendChild(carWrap.firstElementChild);
+
+        const platePill = document.createElement('span');
+        platePill.className = 'bay-car-plate my-plate';
+        platePill.textContent = slot.vehicleNumber || 'YOUR CAR';
+        bayDiv.appendChild(platePill);
+
+        bayDiv.addEventListener('click', () => {
+          showToast(`ℹ️ Bay ${slot.id} is your currently saved parking spot.`, 'info', 2500);
+        });
+      } else if (isOccupied) {
+        // Render Top-Down Car Vector for Occupied Bay
+        const carColor = isBookedByOther ? (slot.carColor || '#ef4444') : (slot.carColor || '#94a3b8');
+        const carHtml = createTopDownCarSvg(carColor);
         const carWrap = document.createElement('div');
         carWrap.innerHTML = carHtml;
         bayDiv.appendChild(carWrap.firstElementChild);
 
         const platePill = document.createElement('span');
         platePill.className = 'bay-car-plate';
-        platePill.textContent = slot.carModel || 'FULL';
+        platePill.textContent = slot.vehicleNumber ? slot.vehicleNumber : (slot.carModel || 'TAKEN');
         bayDiv.appendChild(platePill);
 
         // Click on occupied bay to provide friendly feedback
         bayDiv.addEventListener('click', () => {
-          showToast(`⚠️ Bay ${slot.id} is occupied by a parked vehicle (${slot.carModel || 'Occupied'}). Please tap a green open bay or click "✨ Suggest Where to Park"!`, 'warning', 3200);
+          const detail = slot.vehicleNumber ? `vehicle ${slot.vehicleNumber}` : (slot.carModel || 'another driver');
+          showToast(`⚠️ Bay ${slot.id} is occupied by ${detail}. Please tap an open green bay or click "✨ Suggest Where to Park"!`, 'warning', 3500);
         });
       } else {
         // Available Open Bay
@@ -410,6 +434,7 @@ function initHomePage() {
         if (zoneInfo.availableSpots > 0) {
           panelStatusVal.textContent = '🟢 Ready to Park';
           panelStatusVal.className = 'detail-val status-val-avail';
+          panelStatusVal.style.color = '';
         } else {
           panelStatusVal.textContent = '🔴 Zone Full';
           panelStatusVal.className = 'detail-val';
@@ -449,9 +474,9 @@ function initHomePage() {
     });
   }
 
-  // Save Details / Park Here Button
+  // Save Details / Park Here Button with Real-Time Cloud Sync & Double-Booking Protection
   if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
+    saveBtn.addEventListener('click', async () => {
       if (!currentZoneKey || !currentSlotId) {
         showToast('Please tap an available slot on the map first.', 'warning');
         return;
@@ -461,6 +486,48 @@ function initHomePage() {
       const zoneObj = CAMPUS_DATA.zones[currentZoneKey];
       const milestones = (destObj.milestones && destObj.milestones[currentZoneKey]) ? destObj.milestones[currentZoneKey] : [];
 
+      // Disable button and show spinner
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `
+        <svg class="spin-loader" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+          <path d="M12 2a10 10 0 0 1 10 10"></path>
+        </svg>
+        <span>Verifying Bay ${currentSlotId}...</span>
+      `;
+
+      // 1. Cross-Device Live Slot Booking & Collision Check
+      if (window.SmartParkSync) {
+        const syncResult = await window.SmartParkSync.bookSlot({
+          slotId: currentSlotId,
+          zoneKey: currentZoneKey,
+          destination: destObj ? destObj.name : 'Academic Block',
+          vehicleNumber: 'PB-08-LP-2024',
+          vehicleModel: 'Swift Sedan',
+          carColor: '#38bdf8'
+        });
+
+        if (syncResult && syncResult.conflict) {
+          // Double-booking conflict prevented!
+          showToast(`⚠️ ${syncResult.message}`, 'warning', 4500);
+          // Auto-suggest next open slot
+          const nextSuggestion = CAMPUS_DATA.suggestBestSlot(destObj ? destObj.shortName : currentDestination);
+          currentSlotId = nextSuggestion.slotId;
+          activeSuggestedSlotId = nextSuggestion.slotId;
+          renderVisualSlots();
+          updateOverviewPanel();
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Save Parking Details & Get Pass</span>
+          `;
+          return;
+        }
+      }
+
+      // 2. Persist to local pass and storage
       const savePayload = {
         destinationKey: currentDestination,
         destinationName: destObj.name,
@@ -489,10 +556,49 @@ function initHomePage() {
           window.location.href = isEditMode ? 'find.html' : 'saved.html';
         }, 800);
       } else {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Save Parking Details & Get Pass</span>
+        `;
         showToast('Failed to save details. Please try again.', 'warning');
       }
     });
   }
+
+  // Real-Time Cross-Device Sync Listener
+  window.addEventListener('smartpark:slotsupdated', (e) => {
+    // If the currently selected slot was just booked by another person on another phone
+    const zoneInfo = CAMPUS_DATA.zones[currentZoneKey];
+    if (zoneInfo && zoneInfo.slots) {
+      const selectedSlot = zoneInfo.slots.find(s => s.id === currentSlotId);
+      if (selectedSlot && selectedSlot.isBookedByOther) {
+        showToast(`🔔 Notice: Bay ${currentSlotId} was just taken by another user. Selecting next available bay...`, 'warning', 3500);
+        const nextSuggestion = CAMPUS_DATA.suggestBestSlot(CAMPUS_DATA.destinations[currentDestination]?.shortName);
+        currentSlotId = nextSuggestion.slotId;
+        activeSuggestedSlotId = nextSuggestion.slotId;
+      }
+    }
+
+    // Refresh UI
+    renderVisualSlots();
+    updateOverviewPanel();
+
+    // Refresh tab badges
+    zoneTabBtns.forEach(btn => {
+      const zKey = btn.dataset.zone;
+      const z = CAMPUS_DATA.zones[zKey];
+      if (z) {
+        const badge = btn.querySelector('.tab-badge');
+        if (badge) {
+          badge.textContent = z.availableSpots > 0 ? `${z.availableSpots} Free` : 'FULL';
+          badge.className = `tab-badge ${z.badgeClass}`;
+        }
+      }
+    });
+  });
 
   // Initial Boot
   setZone('B');
