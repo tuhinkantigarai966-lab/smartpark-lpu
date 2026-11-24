@@ -259,6 +259,59 @@ a {
   100% { transform: scale(0.9); opacity: 0.8; }
 }
 
+/* Live Cloud Sync Strip (Top Banner) */
+.live-sync-strip {
+  background: rgba(16, 185, 129, 0.08);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.25);
+  backdrop-filter: blur(8px);
+  padding: 0.45rem 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.live-sync-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sync-status-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.sync-beacon-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: beaconBob 1.2s ease-in-out infinite alternate;
+}
+
+.sync-status-title {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #34d399;
+}
+
+.sync-status-label {
+  font-weight: 700;
+  color: #a7f3d0;
+  background: rgba(16, 185, 129, 0.2);
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 0.72rem;
+}
+
+.sync-status-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
 /* ==========================================================================
    CINEMATIC LPU AERIAL DRONE FLIGHT & SMART PARKING THEATER
    ========================================================================== */

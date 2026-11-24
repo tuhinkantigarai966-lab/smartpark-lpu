@@ -410,6 +410,15 @@ const SmartParkSync = {
   _eventsBound: false,
   _cloudMasterUrl: 'https://api.restful-api.dev/objects/ff808181a09d98f701a20d34f00c349b',
 
+  isLocal: function() {
+    try {
+      const h = window.location.hostname || '';
+      return h === 'localhost' || h === '127.0.0.1' || h === '' || window.location.protocol === 'file:';
+    } catch (e) {
+      return false;
+    }
+  },
+
   getDeviceId: function() {
     try {
       let id = localStorage.getItem(this._deviceIdKey);
@@ -427,24 +436,26 @@ const SmartParkSync = {
    * Fetch current campus bookings from Vercel Serverless API or direct Master Cloud fallback
    */
   fetchLiveSlots: async function() {
-    // 1. Attempt Vercel Serverless API first
-    try {
-      const res = await fetch('/api/slots', {
-        cache: 'no-store',
-        headers: { 'Cache-Control': 'no-cache, no-store', 'Pragma': 'no-cache' }
-      });
-      if (res.ok) {
-        const json = await res.json();
-        if (json && typeof json.bookedSlots === 'object') {
-          this.applyBookingsToCampusData(json.bookedSlots);
-          return json.bookedSlots;
+    // 1. If deployed on Vercel (or remote host), query /api/slots
+    if (!this.isLocal()) {
+      try {
+        const res = await fetch('/api/slots', {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache, no-store', 'Pragma': 'no-cache' }
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json && typeof json.bookedSlots === 'object') {
+            this.applyBookingsToCampusData(json.bookedSlots);
+            return json.bookedSlots;
+          }
         }
+      } catch (err) {
+        // Vercel function cold start or network hiccup; proceed to cloud fallback
       }
-    } catch (err) {
-      // Serverless API endpoint not active in static preview; proceed to fallback
     }
 
-    // 2. Direct Master Cloud Store Fallback
+    // 2. Direct Master Cloud Store (always reliable on localhost, file://, and Vercel fallback)
     try {
       const res = await fetch(this._cloudMasterUrl, {
         cache: 'no-store',
@@ -544,32 +555,36 @@ const SmartParkSync = {
       deviceId: deviceId
     };
 
-    // 1. Try Vercel Serverless API
-    try {
-      const res = await fetch('/api/slots', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const json = await res.json();
-      if (res.status === 409 || (json && json.error === 'ALREADY_BOOKED')) {
-        return {
-          success: false,
-          conflict: true,
-          message: json.message || `Bay ${slotData.slotId} is already booked by another vehicle!`
-        };
+    // 1. If running on Vercel production, try /api/slots
+    if (!this.isLocal()) {
+      try {
+        const res = await fetch('/api/slots', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json && json.success) {
+            if (json.bookedSlots) this.applyBookingsToCampusData(json.bookedSlots);
+            return { success: true, booking: json.booking };
+          }
+        } else if (res.status === 409) {
+          const json = await res.json();
+          return {
+            success: false,
+            conflict: true,
+            message: (json && json.message) || `Bay ${slotData.slotId} is already booked by another vehicle!`
+          };
+        }
+      } catch (err) {
+        // Fallback to direct cloud store
       }
-      if (res.ok && json.success) {
-        if (json.bookedSlots) this.applyBookingsToCampusData(json.bookedSlots);
-        return { success: true, booking: json.booking };
-      }
-    } catch (err) {
-      // Serverless not available, fallback to direct cloud store
     }
 
-    // 2. Direct Cloud Fallback
+    // 2. Direct Cloud Fallback (Used on localhost, file://, and Vercel fallback)
     try {
-      const getRes = await fetch(this._cloudMasterUrl);
+      const getRes = await fetch(this._cloudMasterUrl, { cache: 'no-store' });
       const getJson = await getRes.json();
       const currentBookings = (getJson && getJson.data && typeof getJson.data === 'object') ? { ...getJson.data } : {};
 
@@ -625,39 +640,49 @@ const SmartParkSync = {
     const deviceId = this.getDeviceId();
     const payload = { action: 'release', slotId: slotId, deviceId: deviceId };
 
-    try {
-      await fetch('/api/slots', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-    } catch (e) {
-      // Direct cloud release fallback
+    if (!this.isLocal()) {
       try {
-        const getRes = await fetch(this._cloudMasterUrl);
-        const getJson = await getRes.json();
-        const currentBookings = (getJson && getJson.data && typeof getJson.data === 'object') ? { ...getJson.data } : {};
-        if (slotId && currentBookings[slotId]) delete currentBookings[slotId];
-        for (const [sId, b] of Object.entries(currentBookings)) {
-          if (b.deviceId === deviceId) delete currentBookings[sId];
-        }
-        await fetch(this._cloudMasterUrl, {
-          method: 'PUT',
+        const res = await fetch('/api/slots', {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: 'smartpark_lpu_master_v1',
-            data: currentBookings
-          })
+          body: JSON.stringify(payload)
         });
-        this.applyBookingsToCampusData(currentBookings);
-      } catch (err) {}
+        if (res.ok) {
+          const json = await res.json();
+          if (json && json.bookedSlots) {
+            this.applyBookingsToCampusData(json.bookedSlots);
+            return;
+          }
+        }
+      } catch (e) {}
     }
+
+    // Direct cloud release fallback
+    try {
+      const getRes = await fetch(this._cloudMasterUrl, { cache: 'no-store' });
+      const getJson = await getRes.json();
+      const currentBookings = (getJson && getJson.data && typeof getJson.data === 'object') ? { ...getJson.data } : {};
+      if (slotId && currentBookings[slotId]) delete currentBookings[slotId];
+      for (const [sId, b] of Object.entries(currentBookings)) {
+        if (b.deviceId === deviceId) delete currentBookings[sId];
+      }
+      await fetch(this._cloudMasterUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'smartpark_lpu_master_v1',
+          data: currentBookings
+        })
+      });
+      this.applyBookingsToCampusData(currentBookings);
+    } catch (err) {}
   },
 
   /**
    * Start auto-polling (every 3.5s) and attach window focus / visibility triggers
    */
   startAutoSync: function(intervalMs = 3500) {
+    console.log('🚀 [SmartPark LPU] Cross-Device Real-Time Sync v8.0 Connected - Device ID:', this.getDeviceId());
     this.fetchLiveSlots();
 
     if (this._syncTimer) clearInterval(this._syncTimer);
